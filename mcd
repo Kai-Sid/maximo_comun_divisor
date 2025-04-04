@@ -1,37 +1,39 @@
-class MCDCalculadora:
+class MCD:
     def __init__(self, a=1, b=1):
-        self._a = None
-        self._b = None
-        self.a = a
-        self.b = b
+        self.__a = None
+        self.__b = None
+        self.set_a(a)
+        self.set_b(b)
 
-    @property
-    def a(self):
-        return self._a
+    # Getter de a
+    def get_a(self):
+        return self.__a
 
-    @a.setter
-    def a(self, valor):
-        if self._es_valido(valor):
-            self._a = valor
+    # Setter de a
+    def set_a(self, valor):
+        if self.__es_valido(valor):
+            self.__a = valor
         else:
-            raise ValueError("El valor de 'a' debe ser un entero positivo.")
+            raise ValueError("El número 'a' debe ser un entero positivo.")
 
-    @property
-    def b(self):
-        return self._b
+    # Getter de b
+    def get_b(self):
+        return self.__b
 
-    @b.setter
-    def b(self, valor):
-        if self._es_valido(valor):
-            self._b = valor
+    # Setter de b
+    def set_b(self, valor):
+        if self.__es_valido(valor):
+            self.__b = valor
         else:
-            raise ValueError("El valor de 'b' debe ser un entero positivo.")
+            raise ValueError("El número 'b' debe ser un entero positivo.")
 
-    def _es_valido(self, valor):
+    # Método privado para validar
+    def __es_valido(self, valor):
         return isinstance(valor, int) and valor > 0
 
-    def calcular_mcd(self):
-        a, b = self._a, self._b
+    # Cálculo del MCD usando el algoritmo de Euclides
+    def calcular(self):
+        a, b = self.__a, self.__b
         while b != 0:
             a, b = b, a % b
         return a
@@ -42,33 +44,31 @@ class EntradaUsuario:
     def solicitar_numero(mensaje):
         while True:
             entrada = input(mensaje)
-            if EntradaUsuario._validar_numero(entrada):
-                return int(entrada)
-
-    @staticmethod
-    def _validar_numero(valor):
-        try:
-            numero = int(valor)
-            if numero <= 0:
-                print("Por favor, ingrese un número entero positivo.")
-                return False
-            return True
-        except ValueError:
-            print("Por favor, ingrese un número entero válido.")
-            return False
+            try:
+                num = int(entrada)
+                if num > 0:
+                    return num
+                else:
+                    print("Por favor, ingrese un número entero positivo.")
+            except ValueError:
+                print("Por favor, ingrese un número entero válido.")
 
 
 def main():
-    print("=== Calculadora de Máximo Común Divisor (MCD) ===")
+    print("=== Calculadora de MCD con POO ===")
     num1 = EntradaUsuario.solicitar_numero("Ingrese el primer número entero positivo: ")
     num2 = EntradaUsuario.solicitar_numero("Ingrese el segundo número entero positivo: ")
 
-    calculadora = MCDCalculadora()
-    calculadora.a = num1
-    calculadora.b = num2
+    mcd = MCD()
+    mcd.set_a(num1)
+    mcd.set_b(num2)
 
-    resultado = calculadora.calcular_mcd()
-    print(f"El Máximo Común Divisor de {calculadora.a} y {calculadora.b} es: {resultado}")
+    resultado = mcd.calcular()
+    print(f"El Máximo Común Divisor de {mcd.get_a()} y {mcd.get_b()} es: {resultado}")
+
+
+if __name__ == "__main__":
+    main()
 
 
 if __name__ == "__main__":
